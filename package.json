@@ -1,0 +1,42 @@
+{
+  "name": "arieta-noova-web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "verificar:tokens": "node scripts/verificar-tokens.mjs",
+    "sanity:semilla": "node --env-file=.env.local scripts/sembrar-sanity.mjs",
+    "verificar:rne": "tsx --test scripts/verificar-rne.test.ts",
+    "verificar": "npm run verificar:tokens && npm run verificar:rne && npm run typecheck",
+    "cuestionario": "tsx scripts/generar-cuestionario.mjs"
+  },
+  "dependencies": {
+    "@next/third-parties": "^15.2.9",
+    "@sanity/image-url": "^1.1.0",
+    "@sanity/vision": "^3.68.0",
+    "next": "15.2.9",
+    "next-sanity": "9.12.3",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "resend": "^4.6.0",
+    "sanity": "^3.68.0",
+    "styled-components": "^6.1.13",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.6",
+    "@tailwindcss/postcss": "^4.0.0",
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "15.2.9",
+    "tailwindcss": "^4.0.0",
+    "tsx": "^4.23.12",
+    "typescript": "^5.7.0"
+  }
+}

@@ -1,0 +1,178 @@
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ÚNICA FUENTE DE VERDAD VISUAL DEL SITIO
+
+   Todo color, tipografía, radio y sombra del sitio sale de aquí.
+   Ningún componente puede llevar un valor hexadecimal, un `text-blue-600`
+   ni un `rounded-lg` de la paleta por defecto de Tailwind.
+
+   Cuando llegue el kit de marca: se reemplazan los valores de este bloque
+   y el sitio entero queda revestido. No hay que tocar ningún componente.
+
+   Verificable con: npm run verificar:tokens
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@theme {
+  /* ── Color ──────────────────────────────────────────────────────────
+     PROVISIONAL — reemplazar con el kit de marca (taller del 10 ago).
+     Los valores actuales son marcadores de posición: cumplen contraste
+     AA pero no representan ninguna decisión de marca.                  */
+
+  --color-marca-900: #1a2e35;
+  --color-marca-700: #2d4f5a;
+  --color-marca-500: #3f7d8c;
+  --color-acento: #c9a227;
+  --color-tinta: #16151a;
+  --color-suave: #6b6f76;
+  --color-linea: #e2e5ea;
+  --color-fondo: #ffffff;
+  --color-fondo-alt: #f6f7f9;
+
+  /* Derivados de estado. También provisionales. */
+  --color-exito: #1e6b46;
+  --color-error: #a32020;
+  --color-aviso: #8a5a00;
+
+  /* ── Tipografía ─────────────────────────────────────────────────────
+     Las familias se cargan en app/fonts.ts con next/font y se exponen
+     como variables CSS. Cambiar de fuente = editar ese archivo y nada más. */
+
+  --font-display: var(--font-display-var), ui-serif, Georgia, serif;
+  --font-cuerpo: var(--font-cuerpo-var), ui-sans-serif, system-ui, sans-serif;
+
+  /* ── Forma ──────────────────────────────────────────────────────────
+     PROVISIONAL — el kit de marca define si la clínica es de esquinas
+     duras o suaves.                                                    */
+
+  --radius-card: 0.75rem;
+  --radius-boton: 0.5rem;
+  --radius-pastilla: 9999px;
+
+  /* ── Elevación ─────────────────────────────────────────────────────
+     PROVISIONAL.                                                       */
+
+  --shadow-card: 0 1px 2px 0 rgb(22 21 26 / 0.04), 0 4px 16px -4px rgb(22 21 26 / 0.08);
+  --shadow-flotante: 0 4px 12px -2px rgb(22 21 26 / 0.16);
+
+  /* ── Ritmo vertical ────────────────────────────────────────────────
+     Espaciados de sección, para que todas las páginas respiren igual.  */
+
+  --spacing-seccion: 4rem;
+  --spacing-seccion-lg: 6rem;
+
+  /* ── Movimiento ────────────────────────────────────────────────────── */
+
+  --ease-suave: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   Base
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Compensa el header pegajoso al saltar a un ancla. */
+    scroll-padding-top: 5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-fondo);
+    color: var(--color-tinta);
+    font-family: var(--font-cuerpo);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    color: var(--color-marca-900);
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Foco visible en todo elemento interactivo. Criterio de verificación
+     del sprint: navegación completa con teclado, foco visible. */
+  :focus-visible {
+    outline: 2px solid var(--color-marca-500);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* Nunca quitar el foco sin reemplazarlo. */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  ::selection {
+    background-color: var(--color-marca-500);
+    color: var(--color-fondo);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   Utilidades propias
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@layer utilities {
+  /* Salto de contenido para lectores de pantalla y teclado. */
+  .solo-lectores {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  .solo-lectores-enfocable:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+  }
+
+  /* Deja sitio a la StickyBookingBar en móvil para que no tape el pie. */
+  .hueco-barra-movil {
+    padding-bottom: calc(4.5rem + env(safe-area-inset-bottom));
+  }
+
+  @media (min-width: 1024px) {
+    .hueco-barra-movil {
+      padding-bottom: 0;
+    }
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   Movimiento reducido — respetado globalmente, no componente por componente
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
