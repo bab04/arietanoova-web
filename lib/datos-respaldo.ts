@@ -24,7 +24,7 @@ export const AJUSTES_RESPALDO_COMPLETOS: AjustesSitio = {
   nombreClinica: "Arieta Noova",
   distrito: "Pueblo Libre",
   ciudad: "Lima",
-  direccion: "Av. Brasil 3140",
+  direccion: "Av. Antonio José de Sucre 1160",
   oficina: "Of. 204",
   telefono: "+51 1 461 2345",
   whatsapp: "51940863687",
