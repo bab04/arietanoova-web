@@ -15,6 +15,7 @@ export const RUTAS = {
   casos: "/casos",
   paraOdontologos: "/para-odontologos",
   evaluacionMatutina: "/evaluacion-matutina",
+  formasDePago: "/formas-de-pago",
   contacto: "/contacto",
 } as const;
 
@@ -25,20 +26,21 @@ export interface EntradaNavegacion {
   fase2?: boolean;
 }
 
-/** Navegación principal. El orden es el orden del menú. */
+/** Navegación principal de primer nivel (escritorio y móvil). */
 export const NAVEGACION_PRINCIPAL: EntradaNavegacion[] = [
   { etiqueta: "Especialidades", href: RUTAS.especialidades },
-  { etiqueta: "Problemas", href: RUTAS.problemas, fase2: true },
   { etiqueta: "Equipo", href: RUTAS.equipo },
   { etiqueta: "Tecnología", href: RUTAS.tecnologia },
-  { etiqueta: "Casos", href: RUTAS.casos, fase2: true },
+  { etiqueta: "Para odontólogos", href: RUTAS.paraOdontologos },
   { etiqueta: "Contacto", href: RUTAS.contacto },
 ];
 
-/** Enlaces que van en el pie pero no en el menú principal. */
+/** Enlaces que van en el pie y enlazados contextualmente. */
 export const NAVEGACION_PIE: EntradaNavegacion[] = [
+  { etiqueta: "Problemas frecuentes", href: RUTAS.problemas },
+  { etiqueta: "Casos clínicos", href: RUTAS.casos },
   { etiqueta: "Evaluación matutina", href: RUTAS.evaluacionMatutina },
-  { etiqueta: "Para odontólogos", href: RUTAS.paraOdontologos },
+  { etiqueta: "Formas de pago", href: RUTAS.formasDePago },
 ];
 
 export function rutaEspecialidad(slug: string): string {

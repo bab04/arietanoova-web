@@ -16,15 +16,10 @@ export const IDIOMA = "es-PE";
 
 export const WHATSAPP_ENV = process.env.NEXT_PUBLIC_WHATSAPP_NUMERO ?? "";
 
-/** Respaldo mínimo. PROVISIONAL: los datos reales viven en Sanity. */
-export const AJUSTES_RESPALDO: AjustesSitio = {
-  nombreClinica: "Arieta Noova",
-  distrito: "Pueblo Libre",
-  ciudad: "Lima",
-  horarios: [],
-  enlacesDoctocliq: [],
-  redes: [],
-};
+import { AJUSTES_RESPALDO_COMPLETOS } from "./datos-respaldo";
+
+/** Respaldo con datos oficiales de la clínica para que la web arranque completa sin Sanity configurado. */
+export const AJUSTES_RESPALDO: AjustesSitio = AJUSTES_RESPALDO_COMPLETOS;
 
 /** Dirección completa en una línea, con la oficina incluida. */
 export function direccionCompleta(ajustes: AjustesSitio): string {

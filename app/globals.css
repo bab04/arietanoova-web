@@ -15,24 +15,38 @@
 
 @theme {
   /* ── Color ──────────────────────────────────────────────────────────
-     PROVISIONAL — reemplazar con el kit de marca (taller del 10 ago).
-     Los valores actuales son marcadores de posición: cumplen contraste
-     AA pero no representan ninguna decisión de marca.                  */
+     PALETA DEFINITIVA CERRADA — Confirmada por la clienta (31 ago 2026).
+     Salen del perfil cromático validado en entrevista.                 */
 
-  --color-marca-900: #1a2e35;
-  --color-marca-700: #2d4f5a;
-  --color-marca-500: #3f7d8c;
-  --color-acento: #c9a227;
-  --color-tinta: #16151a;
-  --color-suave: #6b6f76;
-  --color-linea: #e2e5ea;
+  /* Base — 60% de toda pieza */
+  --color-blanco: #ffffff;
+  --color-crema: #f4f1ea;
+
+  /* Marca y estructura */
+  --color-bosque: #1a4331; /* color de marca principal (11.10:1 sobre blanco) */
+  --color-oliva: #6b7a4f;  /* secundario, superficies grandes (4.64:1) */
+
+  /* Acento */
+  --color-terracota: #c0664a; /* acento de realce, subrayados, datos (4.01:1) */
+
+  /* Metal — decorativo únicamente */
+  --color-oro: #b8933f; /* solo decorativo (2.88:1), nunca texto ni borde informativo */
+
+  /* Mapeo semántico para componentes del sitio */
+  --color-marca-900: #1a4331;
+  --color-marca-700: #1a4331;
+  --color-marca-500: #6b7a4f;
+  --color-acento: #c0664a;
+  --color-tinta: #1a4331;
+  --color-suave: #4a5d52;
+  --color-linea: #e2ded5;
   --color-fondo: #ffffff;
-  --color-fondo-alt: #f6f7f9;
+  --color-fondo-alt: #f4f1ea;
 
-  /* Derivados de estado. También provisionales. */
-  --color-exito: #1e6b46;
+  /* Derivados de estado */
+  --color-exito: #1a4331;
   --color-error: #a32020;
-  --color-aviso: #8a5a00;
+  --color-aviso: #c0664a;
 
   /* ── Tipografía ─────────────────────────────────────────────────────
      Las familias se cargan en app/fonts.ts con next/font y se exponen
@@ -61,9 +75,24 @@
   --spacing-seccion: 4rem;
   --spacing-seccion-lg: 6rem;
 
-  /* ── Movimiento ────────────────────────────────────────────────────── */
+  /* ── Movimiento ──────────────────────────────────────────────────────
+     Una sola curva y tres duraciones para todo el sitio. Si el movimiento
+     se siente rápido o lento, se cambia aquí y cambia en todas partes.
+     Nada de `duration-300` suelto en un componente.                     */
 
   --ease-suave: cubic-bezier(0.16, 1, 0.3, 1);
+  /* Entrada con un punto de reposo más marcado: para lo que aparece. */
+  --ease-entrada: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --duracion-media: 420ms;
+  --duracion-larga: 720ms;
+
+  /* Paso entre elementos de una misma cascada. */
+  --paso-cascada: 90ms;
+
+  /* Utilidades `animate-*` de Tailwind generadas desde estos tokens. */
+  --animate-aparecer: aparecer var(--duracion-larga) var(--ease-entrada) both;
+  --animate-rebote-suave: rebote-suave 2.4s var(--ease-suave) infinite;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -174,5 +203,200 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   MOVIMIENTO
+
+   Tres piezas, en este orden:
+     1. Fotogramas — el vocabulario. Nada se anima con algo que no esté aquí.
+     2. Revelado al entrar en pantalla — lo usa <Revelar> desde React.
+     3. Apertura de portada — la animación de scroll del inicio.
+
+   Dos reglas que no se rompen:
+     · Sin JavaScript, nada queda escondido. El revelado solo se activa
+       dentro de `@media (scripting: enabled)`; si el navegador no ejecuta
+       scripts —o no entiende la consulta— el contenido se ve, sin más.
+     · Con `prefers-reduced-motion`, todo aparece ya colocado. El bloque
+       del final lo impone sin !important repartido por los componentes.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 1.5rem, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes rebote-suave {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, 0.4rem, 0);
+  }
+}
+
+/* Usados por las animaciones ligadas al scroll de la apertura. */
+@keyframes alejarse {
+  to {
+    opacity: 0.2;
+    transform: translate3d(0, 2.5rem, 0) scale(0.985);
+  }
+}
+
+@keyframes desvanecer {
+  to {
+    opacity: 0;
+  }
+}
+
+/* ── 1. Entrada inmediata (sin observador) ───────────────────────────────
+   Para lo que ya está en pantalla al cargar: la portada. El escalonado
+   se pasa por `--retraso` desde el marcado.                              */
+
+@layer utilities {
+  .entrada {
+    animation: var(--animate-aparecer);
+    animation-delay: var(--retraso, 0ms);
+  }
+}
+
+/* ── 2. Revelado al entrar en pantalla ───────────────────────────────────
+   El componente <Revelar> pone `data-revelar` (un elemento) o
+   `data-revelar-cascada` (sus hijos directos, escalonados) y marca
+   `data-visible` cuando el IntersectionObserver dispara.                 */
+
+@media (scripting: enabled) {
+  [data-revelar],
+  [data-revelar-cascada] > * {
+    opacity: 0;
+    transition:
+      opacity var(--duracion-larga) var(--ease-entrada),
+      transform var(--duracion-larga) var(--ease-entrada);
+    transition-delay: var(--retraso, 0ms);
+    will-change: opacity, transform;
+  }
+
+  [data-revelar="abajo"],
+  [data-revelar-cascada] > * {
+    transform: translate3d(0, 1.5rem, 0);
+  }
+
+  [data-revelar="arriba"] {
+    transform: translate3d(0, -1.5rem, 0);
+  }
+
+  [data-revelar="izquierda"] {
+    transform: translate3d(-1.5rem, 0, 0);
+  }
+
+  [data-revelar="derecha"] {
+    transform: translate3d(1.5rem, 0, 0);
+  }
+
+  [data-revelar="escala"] {
+    transform: scale(0.96);
+  }
+
+  /* Cascada: el retraso lo marca la posición, no un índice pasado a mano.
+     Doce hijos cubre la rejilla más larga del sitio; a partir de ahí
+     entran todos con el retraso del duodécimo, que es lo deseable —
+     nadie espera un segundo y medio a que aparezca una tarjeta. */
+  [data-revelar-cascada] > *:nth-child(2) { transition-delay: calc(var(--paso-cascada) * 1); }
+  [data-revelar-cascada] > *:nth-child(3) { transition-delay: calc(var(--paso-cascada) * 2); }
+  [data-revelar-cascada] > *:nth-child(4) { transition-delay: calc(var(--paso-cascada) * 3); }
+  [data-revelar-cascada] > *:nth-child(5) { transition-delay: calc(var(--paso-cascada) * 4); }
+  [data-revelar-cascada] > *:nth-child(6) { transition-delay: calc(var(--paso-cascada) * 5); }
+  [data-revelar-cascada] > *:nth-child(7) { transition-delay: calc(var(--paso-cascada) * 6); }
+  [data-revelar-cascada] > *:nth-child(8) { transition-delay: calc(var(--paso-cascada) * 7); }
+  [data-revelar-cascada] > *:nth-child(n + 9) { transition-delay: calc(var(--paso-cascada) * 8); }
+
+  [data-revelar][data-visible="si"],
+  [data-revelar-cascada][data-visible="si"] > * {
+    opacity: 1;
+    transform: none;
+    will-change: auto;
+  }
+}
+
+/* ── 3. Apertura de portada ──────────────────────────────────────────────
+   La animación de scroll del inicio. Va con `animation-timeline`, es decir
+   la mueve el compositor a partir del scroll: no hay listener de scroll,
+   no hay reflow, no hay hilo principal de por medio.
+
+   Donde no haya soporte (navegadores anteriores a la propiedad) la sección
+   simplemente se queda quieta y sube con la página. Se pierde el adorno,
+   no la lectura.                                                          */
+
+@layer utilities {
+  /* El indicador respira siempre; la flecha es el hijo que rebota. */
+  .indicador-scroll-flecha {
+    animation: var(--animate-rebote-suave);
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* El contenido de la portada se aleja y se apaga en el primer scroll. */
+    .apertura-parallax {
+      animation: alejarse linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0 90vh;
+    }
+
+    /* El "desliza" se va en cuanto el usuario hace justamente eso. */
+    .apertura-indicador {
+      animation: desvanecer linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0 30vh;
+    }
+  }
+}
+
+/* ── Acordeón nativo con apertura animada ────────────────────────────────
+   <details> no anima su altura por defecto. `::details-content` más
+   `interpolate-size` lo resuelven sin sacar el acordeón del HTML nativo
+   (sigue siendo componente de servidor y sigue encontrándolo Ctrl+F).     */
+
+@supports selector(::details-content) {
+  :root {
+    interpolate-size: allow-keywords;
+  }
+
+  details::details-content {
+    block-size: 0;
+    overflow-y: clip;
+    transition:
+      block-size var(--duracion-media) var(--ease-suave),
+      content-visibility var(--duracion-media) var(--ease-suave) allow-discrete;
+  }
+
+  details[open]::details-content {
+    block-size: auto;
+  }
+}
+
+/* ── Movimiento reducido ─────────────────────────────────────────────────
+   El bloque general de más arriba acorta duraciones; aquí, además, se
+   desactiva el estado inicial del revelado. Quien pide menos movimiento
+   ve la página entera montada, no elementos que van llegando de golpe.   */
+
+@media (prefers-reduced-motion: reduce) {
+  [data-revelar],
+  [data-revelar-cascada] > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .indicador-scroll-flecha {
+    animation: none !important;
   }
 }

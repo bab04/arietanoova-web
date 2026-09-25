@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { IconoCorreo, IconoTelefono, IconoUbicacion } from "@/components/Iconos";
+import { Logo } from "@/components/Logo";
 import { NAVEGACION_PIE, NAVEGACION_PRINCIPAL, RUTAS } from "@/lib/rutas";
 import { enlaceTelefono, nombreDia, rangoHorario } from "@/lib/sitio";
 import type { AjustesSitio } from "@/types/contenido";
@@ -32,9 +33,9 @@ export function SiteFooter({ ajustes }: { ajustes: AjustesSitio }) {
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {/* Identidad y dirección */}
           <div className="lg:col-span-1">
-            <p className="font-display text-lg font-semibold text-marca-900">
-              {ajustes.nombreClinica ?? "Arieta Noova"}
-            </p>
+            <div className="mb-3">
+              <Logo variant="principal" ajustes={ajustes} />
+            </div>
 
             {ajustes.direccion || ajustes.oficina ? (
               <p className="mt-4 flex items-start gap-2 font-cuerpo text-sm text-suave">
@@ -170,7 +171,7 @@ export function SiteFooter({ ajustes }: { ajustes: AjustesSitio }) {
 
         <div className="mt-10 flex flex-col gap-3 border-t border-linea pt-6 sm:flex-row sm:items-center sm:justify-between">
           <p className="font-cuerpo text-xs text-suave">
-            © {anio} {ajustes.nombreClinica ?? "Arieta Noova"}. Todos los derechos reservados.
+            © {anio} {ajustes.nombreClinica ?? "ArietaNoova"}. Todos los derechos reservados.
           </p>
           <p className="font-cuerpo text-xs text-suave">
             <Link href={RUTAS.paraOdontologos} className="hover:text-marca-700">

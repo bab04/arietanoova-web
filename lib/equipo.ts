@@ -53,3 +53,28 @@ export function credenciales(miembro: MiembroEquipo): string[] {
 export function etiquetaRne(miembro: Pick<MiembroEquipo, "rneEstado">): string | null {
   return miembro.rneEstado === "en-tramite" ? "RNE en trámite" : null;
 }
+
+/**
+ * Etiquetas de trayectoria profesional.
+ *
+ * Regla de interfaz (Prompt 2): cuando se muestren años, la etiqueta
+ * debe decir explícitamente de qué son. NUNCA un "25 años" suelto
+ * junto a la palabra "especialista".
+ */
+export function etiquetasTrayectoria(miembro: MiembroEquipo): string[] {
+  const lineas: string[] = [];
+
+  if (typeof miembro.aniosEjercicio === "number" && miembro.aniosEjercicio > 0) {
+    const sufijo = miembro.anioTitulacion ? ` · Titulación ${miembro.anioTitulacion}` : "";
+    lineas.push(`${miembro.aniosEjercicio} años de ejercicio profesional${sufijo}`);
+  } else if (typeof miembro.aniosExperiencia === "number" && miembro.aniosExperiencia > 0) {
+    lineas.push(`${miembro.aniosExperiencia} años de ejercicio profesional`);
+  }
+
+  if (typeof miembro.aniosComoEspecialista === "number" && miembro.aniosComoEspecialista > 0) {
+    const sufijo = miembro.anioEspecialidad ? ` · Especialidad ${miembro.anioEspecialidad}` : "";
+    lineas.push(`${miembro.aniosComoEspecialista} años como especialista${sufijo}`);
+  }
+
+  return lineas;
+}

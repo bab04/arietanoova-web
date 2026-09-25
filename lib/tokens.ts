@@ -11,15 +11,22 @@
  */
 
 export const tokens = {
-  marca900: "#1a2e35",
-  marca700: "#2d4f5a",
-  marca500: "#3f7d8c",
-  acento: "#c9a227",
-  tinta: "#16151a",
-  suave: "#6b6f76",
-  linea: "#e2e5ea",
+  blanco: "#ffffff",
+  crema: "#f4f1ea",
+  bosque: "#1a4331",
+  oliva: "#6b7a4f",
+  terracota: "#c0664a",
+  oro: "#b8933f",
+
+  marca900: "#1a4331",
+  marca700: "#1a4331",
+  marca500: "#6b7a4f",
+  acento: "#c0664a",
+  tinta: "#1a4331",
+  suave: "#4a5d52",
+  linea: "#e2ded5",
   fondo: "#ffffff",
-  fondoAlt: "#f6f7f9",
+  fondoAlt: "#f4f1ea",
 } as const;
 
 export type NombreDeToken = keyof typeof tokens;

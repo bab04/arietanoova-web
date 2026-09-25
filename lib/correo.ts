@@ -16,7 +16,7 @@ import type { AjustesSitio } from "@/types/contenido";
  */
 
 const CLAVE = process.env.RESEND_API_KEY ?? "";
-const REMITENTE = process.env.CORREO_REMITENTE ?? "Arieta Noova <onboarding@resend.dev>";
+const REMITENTE = process.env.CORREO_REMITENTE ?? "ArietaNoova <onboarding@resend.dev>";
 const DESTINO_RESPALDO = process.env.CORREO_NOTIFICACIONES ?? "";
 
 let clienteResend: Resend | null = null;

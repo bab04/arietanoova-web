@@ -102,7 +102,7 @@ const hoy = new Date().toLocaleDateString("es-PE", {
   year: "numeric",
 });
 
-const documento = `# Cuestionario de contenido — Arieta Noova
+const documento = `# Cuestionario de contenido — ArietaNoova
 
 **Para:** Dra. Arieta
 **De:** Benjamín Arancibia

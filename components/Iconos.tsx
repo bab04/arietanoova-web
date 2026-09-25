@@ -99,3 +99,87 @@ export const IconoChevron = (p: PropsIcono) => (
     <path d="m6 9 6 6 6-6" />
   </Base>
 );
+
+export const IconoDiente = (p: PropsIcono) => (
+  <Base {...p}>
+    <path d="M7 3C4.2 3 2 5.2 2 8c0 3.3 1.5 6.5 2.5 10 .8 2.8 2.5 3 4 1 1-1.3 2-2 3.5-2s2.5.7 3.5 2c1.5 2 3.2 1.8 4-1 1-3.5 2.5-6.7 2.5-10 0-2.8-2.2-5-5-5-1.8 0-3.2 1-4.5 2.5C11.7 4 10.3 3 8.5 3H7z" />
+  </Base>
+);
+
+export const IconoOrtodoncia = (p: PropsIcono) => (
+  <Base {...p}>
+    <path d="M4 12h16M4 12a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3M4 12a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3" />
+    <rect x="7.5" y="10" width="3" height="4" rx="0.5" />
+    <rect x="13.5" y="10" width="3" height="4" rx="0.5" />
+  </Base>
+);
+
+export const IconoEndodoncia = (p: PropsIcono) => (
+  <Base {...p}>
+    <path d="M12 3v18M12 8c-2 0-4 1.5-4 4s2 5 2 9M12 8c2 0 4 1.5 4 4s-2 5-2 9" />
+    <circle cx="12" cy="5" r="2" />
+  </Base>
+);
+
+export const IconoRehabilitacion = (p: PropsIcono) => (
+  <Base {...p}>
+    <path d="M5 19h14M6 15l2.5-9 3.5 5 3.5-5 2.5 9H6z" />
+    <circle cx="12" cy="5" r="1" />
+  </Base>
+);
+
+export const IconoCirugia = (p: PropsIcono) => (
+  <Base {...p}>
+    <path d="M9 3h6v3H9zM10 6v11l2 4 2-4V6M8 10h8M8 14h8" />
+  </Base>
+);
+
+export const IconoOdontopediatria = (p: PropsIcono) => (
+  <Base {...p}>
+    <circle cx="12" cy="12" r="9" />
+    <circle cx="9" cy="10" r="1.25" fill="currentColor" />
+    <circle cx="15" cy="10" r="1.25" fill="currentColor" />
+    <path d="M8 14.5s1.5 2.5 4 2.5 4-2.5 4-2.5" />
+  </Base>
+);
+
+export const IconoPeriodoncia = (p: PropsIcono) => (
+  <Base {...p}>
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+    <path d="M8 12c1.5 1.5 3 2 4 2s2.5-.5 4-2" />
+  </Base>
+);
+
+export const IconoEscaner3D = (p: PropsIcono) => (
+  <Base {...p}>
+    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+    <path d="M3.27 6.96 12 12.01l8.73-5.05M12 22.08V12" />
+  </Base>
+);
+
+export const IconoEstrella = (p: PropsIcono) => (
+  <Base {...p} fill="currentColor">
+    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+  </Base>
+);
+
+export const IconoEscudo = (p: PropsIcono) => (
+  <Base {...p}>
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+    <path d="m9 12 2 2 4-4" />
+  </Base>
+);
+
+export const IconoCertificado = (p: PropsIcono) => (
+  <Base {...p}>
+    <circle cx="12" cy="8" r="6" />
+    <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" />
+  </Base>
+);
+
+export const IconoSparkles = (p: PropsIcono) => (
+  <Base {...p}>
+    <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3L12 3z" />
+  </Base>
+);
+

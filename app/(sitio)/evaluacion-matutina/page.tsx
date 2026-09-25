@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 import { BookingCTA } from "@/components/BookingCTA";
 import { IconoReloj } from "@/components/Iconos";
@@ -7,6 +8,7 @@ import { ProcessSteps } from "@/components/ProcessSteps";
 import { Contenedor, EstadoVacio, Seccion, TituloSeccion } from "@/components/Seccion";
 import { esquemaMigas, StructuredData } from "@/components/StructuredData";
 import { TeamMember } from "@/components/TeamMember";
+import { EVALUACION_RESPALDO } from "@/lib/datos-respaldo";
 import { construirMetadatos } from "@/lib/metadatos";
 import { RUTAS } from "@/lib/rutas";
 import { consultar } from "@/sanity/client";
@@ -14,14 +16,10 @@ import { PAGINA_EVALUACION } from "@/sanity/queries";
 import type { PaginaEvaluacion } from "@/types/contenido";
 
 /**
- * Landing de la evaluación matutina.
+ * Landing de la evaluación matutina y de tarde (puerta de entrada).
  *
  * Tiene un objetivo comercial concreto: llenar los turnos vacíos de la
- * mañana. Por eso es la página con el camino más corto entre llegar y
- * reservar — la acción está arriba del pliegue y se repite al final,
- * sin nada que la interrumpa en medio.
- *
- * Es la única página del sitio donde se publica un precio.
+ * mañana y tarde con un precio estandarizado accesible de S/ 60.
  */
 
 export const revalidate = 300;
@@ -29,21 +27,22 @@ export const revalidate = 300;
 export function generateMetadata(): Metadata {
   return construirMetadatos({
     ruta: RUTAS.evaluacionMatutina,
-    tituloRespaldo: "Evaluación matutina",
+    tituloRespaldo: "Evaluación Diagnóstica de Entrada (S/ 60)",
     descripcionRespaldo:
-      "Evaluación odontológica en horario de mañana con un especialista de la clínica.",
-    etiquetaOg: "Evaluación matutina",
+      "Evaluación odontológica completa con especialista y diagnóstico digital en Pueblo Libre.",
+    etiquetaOg: "Evaluación",
   });
 }
 
 export default async function PaginaEvaluacionMatutina() {
-  const pagina = await consultar<PaginaEvaluacion | null>(
+  const dato = await consultar<PaginaEvaluacion | null>(
     PAGINA_EVALUACION,
-    null,
+    EVALUACION_RESPALDO,
     {},
     { etiquetas: ["paginaEvaluacion"] },
   );
 
+  const pagina = dato ?? EVALUACION_RESPALDO;
   const enlace = pagina?.enlaceReserva ?? undefined;
 
   return (
@@ -172,6 +171,16 @@ export default async function PaginaEvaluacionMatutina() {
               tamano="lg"
             />
           </div>
+
+          <p className="mt-6 font-cuerpo text-sm text-suave">
+            ¿Deseas saber cómo financiamos los tratamientos posteriores?{" "}
+            <Link
+              href={RUTAS.formasDePago}
+              className="font-medium text-marca-700 underline underline-offset-4 hover:text-marca-900"
+            >
+              Conoce nuestras formas de pago y opciones de financiamiento
+            </Link>
+          </p>
         </Contenedor>
       </Seccion>
     </>

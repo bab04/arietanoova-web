@@ -14,7 +14,7 @@ import { TIPOS_SINGLETON } from "./schemas";
  */
 export const estructura: StructureResolver = (S) =>
   S.list()
-    .title("Arieta Noova")
+    .title("ArietaNoova")
     .items([
       S.listItem()
         .title("Especialidades")
@@ -52,6 +52,13 @@ export const estructura: StructureResolver = (S) =>
         .id("paginaDerivacion")
         .child(
           S.document().schemaType("paginaDerivacion").documentId("paginaDerivacion"),
+        ),
+
+      S.listItem()
+        .title("Formas de pago")
+        .id("paginaFormasDePago")
+        .child(
+          S.document().schemaType("paginaFormasDePago").documentId("paginaFormasDePago"),
         ),
 
       S.divider(),

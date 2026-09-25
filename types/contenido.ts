@@ -33,6 +33,13 @@ export interface Faq {
   respuesta?: string;
 }
 
+export interface ExperienciaDocente {
+  _key?: string;
+  institucion?: string;
+  aniosDocencia?: string;
+  vigente?: boolean;
+}
+
 export interface MiembroEquipo {
   _id: string;
   nombre?: string;
@@ -43,9 +50,15 @@ export interface MiembroEquipo {
   rne?: string;
   rneEstado?: EstadoRne;
   formacion?: string[];
+  anioTitulacion?: number;
+  aniosEjercicio?: number;
+  anioEspecialidad?: number;
+  aniosComoEspecialista?: number;
+  docencia?: ExperienciaDocente[];
   aniosExperiencia?: number;
   bio?: string;
   foto?: ImagenSanityRef;
+  fotoLocal?: string;
   esDirectora?: boolean;
   orden?: number;
 }
@@ -57,6 +70,7 @@ export interface Tecnologia {
   descripcion?: string;
   queSignificaParaElPaciente?: string;
   imagen?: ImagenSanityRef;
+  fotoLocal?: string;
   orden?: number;
 }
 
@@ -77,6 +91,7 @@ export interface Especialidad {
   imagenPrincipal?: ImagenSanityRef;
   seoTitulo?: string;
   seoDescripcion?: string;
+  enlaceFormasDePagoTexto?: string;
   orden?: number;
 }
 
@@ -163,6 +178,32 @@ export interface PaginaEvaluacion {
   enlaceReserva?: string;
 }
 
+export interface ModalidadPago {
+  _key?: string;
+  nombre?: string;
+  descripcion?: string;
+}
+
+export interface OpcionFinanciamiento {
+  _key?: string;
+  nombre?: string;
+  descripcion?: string;
+  requisitos?: string;
+}
+
+export interface PaginaFormasDePago {
+  titulo?: string;
+  intro?: string;
+  notaTransparencia?: string;
+  comoSeEntregaElPresupuesto?: string;
+  modalidadesDePago?: ModalidadPago[];
+  financiamiento?: OpcionFinanciamiento[];
+  coberturaSeguros?: string;
+  preguntasFrecuentes?: Faq[];
+  seoTitulo?: string;
+  seoDescripcion?: string;
+}
+
 export interface Horario {
   _key?: string;
   dia?: string;
@@ -186,6 +227,10 @@ export interface RedSocial {
 
 export interface AjustesSitio {
   nombreClinica?: string;
+  logoPrincipal?: ImagenSanityRef;
+  logoInvertido?: ImagenSanityRef;
+  isotipo?: ImagenSanityRef;
+  favicon?: ImagenSanityRef;
   direccion?: string;
   oficina?: string;
   distrito?: string;

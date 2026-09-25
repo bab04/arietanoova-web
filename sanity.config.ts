@@ -9,8 +9,8 @@ import { schemaTypes } from "@/sanity/schemas";
 import { API_VERSION, DATASET, PROJECT_ID } from "@/sanity/env";
 
 export default defineConfig({
-  name: "arieta-noova-studio",
-  title: "Arieta Noova",
+  name: "arietanoova-studio",
+  title: "ArietaNoova",
   basePath: "/studio",
   projectId: PROJECT_ID,
   dataset: DATASET,

@@ -5,6 +5,7 @@ import { ProcessSteps } from "@/components/ProcessSteps";
 import { ReferralForm } from "@/components/ReferralForm";
 import { Contenedor, EstadoVacio, Seccion, TituloSeccion } from "@/components/Seccion";
 import { esquemaMigas, StructuredData } from "@/components/StructuredData";
+import { DERIVACION_RESPALDO, ESPECIALIDADES_RESUMEN_RESPALDO } from "@/lib/datos-respaldo";
 import { construirMetadatos } from "@/lib/metadatos";
 import { RUTAS } from "@/lib/rutas";
 import { consultar } from "@/sanity/client";
@@ -35,14 +36,17 @@ export function generateMetadata(): Metadata {
 }
 
 export default async function PaginaDerivacionProfesional() {
-  const [pagina, especialidades] = await Promise.all([
-    consultar<PaginaDerivacion | null>(PAGINA_DERIVACION, null, {}, {
+  const [datoPagina, datoEspecialidades] = await Promise.all([
+    consultar<PaginaDerivacion | null>(PAGINA_DERIVACION, DERIVACION_RESPALDO, {}, {
       etiquetas: ["paginaDerivacion"],
     }),
-    consultar<EspecialidadResumen[]>(ESPECIALIDADES_INDICE, [], {}, {
+    consultar<EspecialidadResumen[]>(ESPECIALIDADES_INDICE, ESPECIALIDADES_RESUMEN_RESPALDO, {}, {
       etiquetas: ["especialidad"],
     }),
   ]);
+
+  const pagina = datoPagina ?? DERIVACION_RESPALDO;
+  const especialidades = datoEspecialidades && datoEspecialidades.length > 0 ? datoEspecialidades : ESPECIALIDADES_RESUMEN_RESPALDO;
 
   const bloques: Array<{ titulo: string; contenido?: string }> = [
     { titulo: "Cómo coordinamos el caso", contenido: pagina?.comoCoordinamos },

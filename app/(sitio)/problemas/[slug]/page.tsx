@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 
 import { BookingCTA } from "@/components/BookingCTA";
 import { FaqAccordion } from "@/components/FaqAccordion";
+import { RevelarEnCascada } from "@/components/Revelar";
 import { Contenedor, Seccion, TituloSeccion } from "@/components/Seccion";
 import { SpecialtyCard } from "@/components/SpecialtyCard";
 import {
@@ -19,27 +20,34 @@ import { RUTAS, rutaProblema } from "@/lib/rutas";
 import { urlAbsoluta } from "@/lib/sitio";
 import { consultar } from "@/sanity/client";
 import { PROBLEMA_POR_SLUG, SLUGS_PROBLEMA } from "@/sanity/queries";
-import type { Problema } from "@/types/contenido";
+import type { EspecialidadResumen, Problema } from "@/types/contenido";
 
 /** Página de un problema — Fase 2. */
 
 export const revalidate = 60;
 export const dynamicParams = true;
 
+import { PROBLEMAS_DETALLADOS_RESPALDO } from "@/lib/datos-respaldo";
+
 type Props = { params: Promise<{ slug: string }> };
 
 export async function generateStaticParams() {
-  const slugs = await consultar<string[]>(SLUGS_PROBLEMA, []);
+  const slugs = await consultar<string[]>(
+    SLUGS_PROBLEMA,
+    PROBLEMAS_DETALLADOS_RESPALDO.map((p) => p.slug ?? ""),
+  );
   return slugs.filter(Boolean).map((slug) => ({ slug }));
 }
 
 async function obtener(slug: string) {
-  return consultar<Problema | null>(
+  const respaldo = PROBLEMAS_DETALLADOS_RESPALDO.find((p) => p.slug === slug) ?? null;
+  const dato = await consultar<Problema | null>(
     PROBLEMA_POR_SLUG,
-    null,
+    respaldo,
     { slug },
     { etiquetas: ["problema", `problema:${slug}`] },
   );
+  return dato ?? respaldo;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -131,15 +139,17 @@ export default async function PaginaProblema({ params }: Props) {
         <Seccion fondo="alt" aria="Especialidades relacionadas">
           <Contenedor>
             <TituloSeccion nivel={2}>Qué especialidad lo resuelve</TituloSeccion>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {problema.especialidadesRelacionadas.map((especialidad) => (
-                <SpecialtyCard
-                  key={especialidad._id}
-                  especialidad={especialidad}
-                  conImagen={false}
-                />
-              ))}
-            </div>
+            <RevelarEnCascada className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {problema.especialidadesRelacionadas.map(
+                (especialidad: EspecialidadResumen) => (
+                  <SpecialtyCard
+                    key={especialidad._id}
+                    especialidad={especialidad}
+                    conImagen={false}
+                  />
+                ),
+              )}
+            </RevelarEnCascada>
           </Contenedor>
         </Seccion>
       ) : null}

@@ -99,7 +99,8 @@ export function BookingCTA({
 
   const clases = cx(
     "inline-flex items-center justify-center gap-2 rounded-boton font-cuerpo font-semibold",
-    "transition-colors duration-200 ease-suave",
+    "transition duration-200 ease-suave",
+    "hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]",
     TAMANOS[tamano],
     ESTILOS[estilo],
     ancho && "w-full",

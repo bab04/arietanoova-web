@@ -1,4 +1,4 @@
-# Cuestionario de contenido — Arieta Noova
+# Cuestionario de contenido — ArietaNoova
 
 **Para:** Dra. Arieta
 **De:** Benjamín Arancibia

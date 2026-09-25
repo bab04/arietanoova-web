@@ -6,6 +6,7 @@ import { especialidad } from "./especialidad";
 import { miembroEquipo } from "./miembroEquipo";
 import { paginaDerivacion } from "./paginaDerivacion";
 import { paginaEvaluacion } from "./paginaEvaluacion";
+import { paginaFormasDePago } from "./paginaFormasDePago";
 import { problema } from "./problema";
 import { tecnologia } from "./tecnologia";
 
@@ -19,6 +20,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   // Páginas únicas
   paginaEvaluacion,
   paginaDerivacion,
+  paginaFormasDePago,
   ajustesSitio,
 ];
 
@@ -27,6 +29,7 @@ export const TIPOS_SINGLETON = [
   "ajustesSitio",
   "paginaDerivacion",
   "paginaEvaluacion",
+  "paginaFormasDePago",
 ] as const;
 
 export type TipoSingleton = (typeof TIPOS_SINGLETON)[number];

@@ -41,6 +41,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       { url: urlAbsoluta(RUTAS.equipo), priority: 0.8, changeFrequency: "monthly" },
       { url: urlAbsoluta(RUTAS.paraOdontologos), priority: 0.8, changeFrequency: "monthly" },
       { url: urlAbsoluta(RUTAS.tecnologia), priority: 0.7, changeFrequency: "monthly" },
+      { url: urlAbsoluta(RUTAS.formasDePago), priority: 0.8, changeFrequency: "monthly" },
       { url: urlAbsoluta(RUTAS.contacto), priority: 0.7, changeFrequency: "monthly" },
       { url: urlAbsoluta(RUTAS.problemas), priority: 0.6, changeFrequency: "weekly" },
       { url: urlAbsoluta(RUTAS.casos), priority: 0.6, changeFrequency: "weekly" },

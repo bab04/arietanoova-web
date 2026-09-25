@@ -20,8 +20,8 @@ export const metadata: Metadata = {
   metadataBase: new URL(URL_SITIO),
   title: {
     // PROVISIONAL: el eslogan definitivo llega con los textos finales.
-    default: "Arieta Noova",
-    template: "%s · Arieta Noova",
+    default: "ArietaNoova",
+    template: "%s · ArietaNoova",
   },
   alternates: { canonical: "/" },
   robots: {

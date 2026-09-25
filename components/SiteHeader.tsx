@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { BookingCTA } from "@/components/BookingCTA";
 import { IconoCerrar, IconoMenu, IconoTelefono } from "@/components/Iconos";
+import { Logo } from "@/components/Logo";
 import { EVENTOS, registrarEvento } from "@/lib/analitica";
 import { cx } from "@/lib/clases";
 import { NAVEGACION_PIE, NAVEGACION_PRINCIPAL, RUTAS } from "@/lib/rutas";
@@ -75,9 +76,10 @@ export function SiteHeader({ ajustes }: { ajustes: AjustesSitio }) {
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
         <Link
           href={RUTAS.inicio}
-          className="font-display text-lg font-semibold text-marca-900 sm:text-xl"
+          className="inline-flex items-center"
+          aria-label={ajustes.nombreClinica ?? "ArietaNoova"}
         >
-          {ajustes.nombreClinica ?? "Arieta Noova"}
+          <Logo variant="principal" ajustes={ajustes} />
         </Link>
 
         <nav aria-label="Navegación principal" className="hidden lg:block">

@@ -1,3 +1,4 @@
+import { Revelar } from "@/components/Revelar";
 import { cx } from "@/lib/clases";
 
 /**
@@ -62,12 +63,18 @@ export function TituloSeccion({
   descripcion,
   nivel = 2,
   alineado = "izquierda",
+  animar = true,
   className,
 }: {
   children: React.ReactNode;
   descripcion?: string;
   nivel?: 1 | 2 | 3;
   alineado?: "izquierda" | "centro";
+  /**
+   * El título entra al llegar a él. Se apaga con `animar={false}` donde el
+   * título ya está en pantalla al cargar y el movimiento sobraría.
+   */
+  animar?: boolean;
   className?: string;
 }) {
   const Etiqueta = `h${nivel}` as "h1" | "h2" | "h3";
@@ -77,14 +84,10 @@ export function TituloSeccion({
     3: "text-xl sm:text-2xl",
   } as const;
 
-  return (
-    <div
-      className={cx(
-        "mb-10",
-        alineado === "centro" && "text-center",
-        className,
-      )}
-    >
+  const clases = cx("mb-10", alineado === "centro" && "text-center", className);
+
+  const contenido = (
+    <>
       <Etiqueta className={cx("font-display font-semibold", tamanos[nivel])}>
         {children}
       </Etiqueta>
@@ -98,8 +101,14 @@ export function TituloSeccion({
           {descripcion}
         </p>
       ) : null}
-    </div>
+    </>
   );
+
+  if (!animar) return <div className={clases}>{contenido}</div>;
+
+  // Un solo revelado, no dos: el titular y su bajada se leen juntos, así
+  // que entran juntos.
+  return <Revelar className={clases}>{contenido}</Revelar>;
 }
 
 /**

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { BeforeAfter } from "@/components/BeforeAfter";
 import { BookingCTA } from "@/components/BookingCTA";
+import { Revelar } from "@/components/Revelar";
 import { Contenedor, EstadoVacio, Seccion, TituloSeccion } from "@/components/Seccion";
 import { esquemaMigas, StructuredData } from "@/components/StructuredData";
 import { construirMetadatos } from "@/lib/metadatos";
@@ -54,8 +55,9 @@ export default async function PaginaCasos() {
           {casos.length > 0 ? (
             <div className="space-y-16">
               {casos.map((caso) => (
-                <article
+                <Revelar
                   key={caso._id}
+                  etiqueta="article"
                   className="grid gap-8 border-b border-linea pb-16 last:border-0 lg:grid-cols-2 lg:items-start"
                 >
                   <BeforeAfter
@@ -106,7 +108,7 @@ export default async function PaginaCasos() {
                       ) : null}
                     </dl>
                   </div>
-                </article>
+                </Revelar>
               ))}
             </div>
           ) : (

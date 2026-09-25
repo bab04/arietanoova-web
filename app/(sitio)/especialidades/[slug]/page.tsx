@@ -8,6 +8,7 @@ import { IconoReloj } from "@/components/Iconos";
 import { ImagenSanity } from "@/components/ImagenSanity";
 import { IncludesList } from "@/components/IncludesList";
 import { ProcessSteps } from "@/components/ProcessSteps";
+import { RevelarEnCascada } from "@/components/Revelar";
 import { Contenedor, Seccion, TituloSeccion } from "@/components/Seccion";
 import {
   esquemaEspecialidad,
@@ -42,18 +43,25 @@ export const dynamicParams = true;
 
 type Props = { params: Promise<{ slug: string }> };
 
+import { ESPECIALIDADES_RESPALDO } from "@/lib/datos-respaldo";
+
 export async function generateStaticParams() {
-  const slugs = await consultar<string[]>(SLUGS_ESPECIALIDAD, []);
+  const slugs = await consultar<string[]>(
+    SLUGS_ESPECIALIDAD,
+    ESPECIALIDADES_RESPALDO.map((e) => e.slug ?? ""),
+  );
   return slugs.filter(Boolean).map((slug) => ({ slug }));
 }
 
 async function obtener(slug: string) {
-  return consultar<Especialidad | null>(
+  const respaldo = ESPECIALIDADES_RESPALDO.find((e) => e.slug === slug) ?? null;
+  const dato = await consultar<Especialidad | null>(
     ESPECIALIDAD_POR_SLUG,
-    null,
+    respaldo,
     { slug },
     { etiquetas: ["especialidad", `especialidad:${slug}`] },
   );
+  return dato ?? respaldo;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -210,11 +218,11 @@ export default async function PaginaEspecialidad({ params }: Props) {
         <Seccion aria="Quién la atiende">
           <Contenedor>
             <TituloSeccion nivel={2}>Quién la atiende</TituloSeccion>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <RevelarEnCascada className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {especialidad.especialistas.map((miembro) => (
                 <TeamMember key={miembro._id} miembro={miembro} />
               ))}
-            </div>
+            </RevelarEnCascada>
           </Contenedor>
         </Seccion>
       ) : null}
@@ -225,7 +233,7 @@ export default async function PaginaEspecialidad({ params }: Props) {
         <Seccion fondo="alt" aria="Tecnología">
           <Contenedor>
             <TituloSeccion nivel={2}>Tecnología que se usa</TituloSeccion>
-            <div className="grid gap-6 sm:grid-cols-2">
+            <RevelarEnCascada className="grid gap-6 sm:grid-cols-2">
               {especialidad.tecnologiaRelacionada.map((tec) => (
                 <article
                   key={tec._id}
@@ -241,7 +249,7 @@ export default async function PaginaEspecialidad({ params }: Props) {
                   ) : null}
                 </article>
               ))}
-            </div>
+            </RevelarEnCascada>
           </Contenedor>
         </Seccion>
       ) : null}
@@ -255,6 +263,29 @@ export default async function PaginaEspecialidad({ params }: Props) {
           </Contenedor>
         </Seccion>
       ) : null}
+
+      {/* ── Enlace a Formas de Pago ───────────────────────────────────── */}
+      <section className="border-t border-linea bg-fondo py-8">
+        <Contenedor ancho="estrecho">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-card border border-linea bg-fondo-alt p-6">
+            <div>
+              <h3 className="font-display text-base font-semibold text-marca-900">
+                Presupuesto claro y facilidades de pago
+              </h3>
+              <p className="mt-1 font-cuerpo text-sm text-suave">
+                {especialidad.enlaceFormasDePagoTexto ??
+                  "Conoce nuestras modalidades de pago y opciones de financiamiento por etapas."}
+              </p>
+            </div>
+            <Link
+              href={RUTAS.formasDePago}
+              className="inline-flex shrink-0 items-center justify-center rounded-boton border border-linea bg-fondo px-4 py-2 font-cuerpo text-sm font-semibold text-marca-700 transition-colors ease-suave hover:border-marca-700 hover:text-marca-900"
+            >
+              Ver formas de pago
+            </Link>
+          </div>
+        </Contenedor>
+      </section>
 
       {/* ── Cierre ────────────────────────────────────────────────────── */}
       <Seccion fondo="alt" aria="Reservar">

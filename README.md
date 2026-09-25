@@ -1,4 +1,4 @@
-# Arieta Noova — web
+# ArietaNoova — web
 
 Clínica dental de especialistas en Pueblo Libre, Lima.
 Next.js 15 · TypeScript · Tailwind v4 · Sanity v3 · Vercel.

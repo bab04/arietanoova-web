@@ -26,7 +26,7 @@ export function ProblemCard({
       href={rutaProblema(problema.slug)}
       className={cx(
         "group flex flex-col rounded-card border border-linea bg-fondo p-5",
-        "transition-shadow duration-200 ease-suave hover:shadow-card",
+        "transition duration-300 ease-suave hover:-translate-y-1 hover:shadow-card",
         className,
       )}
     >

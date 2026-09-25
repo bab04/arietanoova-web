@@ -107,6 +107,12 @@ const css = readFileSync(join(RAIZ, "app", "globals.css"), "utf8");
 const ts = readFileSync(join(RAIZ, "lib", "tokens.ts"), "utf8");
 
 const PAREJAS = [
+  ["--color-blanco", "blanco"],
+  ["--color-crema", "crema"],
+  ["--color-bosque", "bosque"],
+  ["--color-oliva", "oliva"],
+  ["--color-terracota", "terracota"],
+  ["--color-oro", "oro"],
   ["--color-marca-900", "marca900"],
   ["--color-marca-700", "marca700"],
   ["--color-marca-500", "marca500"],

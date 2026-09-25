@@ -1,9 +1,12 @@
+import Image from "next/image";
 import type { Metadata } from "next";
 
 import { BookingCTA } from "@/components/BookingCTA";
 import { ImagenSanity } from "@/components/ImagenSanity";
+import { Revelar } from "@/components/Revelar";
 import { Contenedor, EstadoVacio, Seccion, TituloSeccion } from "@/components/Seccion";
 import { esquemaMigas, StructuredData } from "@/components/StructuredData";
+import { TECNOLOGIAS_RESPALDO } from "@/lib/datos-respaldo";
 import { construirMetadatos } from "@/lib/metadatos";
 import { RUTAS } from "@/lib/rutas";
 import { consultar } from "@/sanity/client";
@@ -31,12 +34,14 @@ export function generateMetadata(): Metadata {
 }
 
 export default async function PaginaTecnologia() {
-  const tecnologias = await consultar<Tecnologia[]>(
+  const datos = await consultar<Tecnologia[]>(
     TECNOLOGIAS,
-    [],
+    TECNOLOGIAS_RESPALDO,
     {},
     { etiquetas: ["tecnologia"] },
   );
+
+  const tecnologias = datos && datos.length > 0 ? datos : TECNOLOGIAS_RESPALDO;
 
   return (
     <>
@@ -59,18 +64,32 @@ export default async function PaginaTecnologia() {
           {tecnologias.length > 0 ? (
             <div className="space-y-12">
               {tecnologias.map((tec, i) => (
-                <article
+                <Revelar
                   key={tec._id}
+                  etiqueta="article"
+                  direccion={i % 2 === 1 ? "derecha" : "izquierda"}
                   className="grid items-center gap-8 lg:grid-cols-2"
                 >
                   <div className={i % 2 === 1 ? "lg:order-2" : undefined}>
-                    <ImagenSanity
-                      imagen={tec.imagen}
-                      alt={tec.nombre ?? ""}
-                      ancho={800}
-                      className="rounded-card"
-                      sizes="(max-width: 1024px) 100vw, 500px"
-                    />
+                    {tec.fotoLocal ? (
+                      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-card border border-linea bg-fondo-alt shadow-card">
+                        <Image
+                          src={tec.fotoLocal}
+                          alt={tec.nombre ?? ""}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 1024px) 100vw, 600px"
+                        />
+                      </div>
+                    ) : (
+                      <ImagenSanity
+                        imagen={tec.imagen}
+                        alt={tec.nombre ?? ""}
+                        ancho={800}
+                        className="rounded-card"
+                        sizes="(max-width: 1024px) 100vw, 500px"
+                      />
+                    )}
                   </div>
 
                   <div className={i % 2 === 1 ? "lg:order-1" : undefined}>
@@ -93,7 +112,7 @@ export default async function PaginaTecnologia() {
                       </div>
                     ) : null}
                   </div>
-                </article>
+                </Revelar>
               ))}
             </div>
           ) : (

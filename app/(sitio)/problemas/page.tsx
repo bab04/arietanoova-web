@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 
 import { ProblemCard } from "@/components/ProblemCard";
+import { RevelarEnCascada } from "@/components/Revelar";
 import { Contenedor, EstadoVacio, Seccion, TituloSeccion } from "@/components/Seccion";
 import { esquemaMigas, StructuredData } from "@/components/StructuredData";
+import { PROBLEMAS_RESPALDO } from "@/lib/datos-respaldo";
 import { construirMetadatos } from "@/lib/metadatos";
 import { RUTAS } from "@/lib/rutas";
 import { consultar } from "@/sanity/client";
@@ -12,9 +14,8 @@ import type { ProblemaResumen } from "@/types/contenido";
 /**
  * Índice de problemas — Fase 2.
  *
- * La ruta y la plantilla se construyen en el Sprint 1; es normal que quede
- * vacía. Existe separada de las especialidades porque captura la búsqueda
- * en el idioma del paciente ("me sangran las encías") en vez del clínico.
+ * Captura la búsqueda en el idioma del paciente ("me sangran las encías")
+ * en vez del clínico y orienta hacia la especialidad correspondiente.
  */
 
 export const revalidate = 60;
@@ -30,12 +31,14 @@ export function generateMetadata(): Metadata {
 }
 
 export default async function IndiceProblemas() {
-  const problemas = await consultar<ProblemaResumen[]>(
+  const datos = await consultar<ProblemaResumen[]>(
     PROBLEMAS_INDICE,
-    [],
+    PROBLEMAS_RESPALDO,
     {},
     { etiquetas: ["problema"] },
   );
+
+  const problemas = datos && datos.length > 0 ? datos : PROBLEMAS_RESPALDO;
 
   return (
     <>
@@ -56,11 +59,11 @@ export default async function IndiceProblemas() {
           </TituloSeccion>
 
           {problemas.length > 0 ? (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <RevelarEnCascada className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {problemas.map((problema) => (
                 <ProblemCard key={problema._id} problema={problema} />
               ))}
-            </div>
+            </RevelarEnCascada>
           ) : (
             <EstadoVacio
               titulo="Esta sección está en preparación"

@@ -57,6 +57,43 @@ const cliente = createClient({
 // Los identificadores llevan el prefijo "ejemplo-" para poder borrarlos
 // todos de una sola pasada.
 
+const DIRECTORA = {
+  _id: "directora-arieta",
+  _type: "miembroEquipo",
+  nombre: "Dra. Jessica Arieta",
+  slug: { _type: "slug", current: "dra-jessica-arieta" },
+  cargo: "Directora y Especialista",
+  especialidad: "Ortodoncia y ortopedia maxilar",
+  colegiatura: "00000",
+  rne: "0000",
+  rneEstado: "vigente",
+  formacion: [
+    "Cirujano Dentista, Titulación 2001",
+    "Especialidad en Ortodoncia y Ortopedia Maxilar (desde 2013)",
+  ],
+  anioTitulacion: 2001,
+  aniosEjercicio: 25,
+  anioEspecialidad: 2013,
+  aniosComoEspecialista: 13,
+  docencia: [
+    {
+      _key: "d1",
+      institucion: "Universidad Nacional Mayor de San Marcos (UNMSM)",
+      aniosDocencia: "Más de 10 años",
+      vigente: true,
+    },
+    {
+      _key: "d2",
+      institucion: "Universidad Norbert Wiener",
+      aniosDocencia: "4 años",
+      vigente: false,
+    },
+  ],
+  bio: "Directora de ArietaNoova con 25 años de ejercicio profesional y 13 como especialista.",
+  esDirectora: true,
+  orden: 1,
+};
+
 const ESPECIALISTA = {
   _id: "ejemplo-especialista",
   _type: "miembroEquipo",
@@ -69,7 +106,11 @@ const ESPECIALISTA = {
   // Especialista" y permite verificarla en pantalla.
   rneEstado: "en-tramite",
   formacion: [`${MARCA} Universidad y año por confirmar`],
-  aniosExperiencia: 10,
+  anioTitulacion: 2018,
+  aniosEjercicio: 8,
+  anioEspecialidad: 2024,
+  aniosComoEspecialista: 2,
+  aniosExperiencia: 8,
   bio: `${MARCA} Texto de relleno. Sustituir por la reseña real.`,
   esDirectora: false,
   orden: 99,
@@ -104,7 +145,7 @@ const ESPECIALIDAD = {
   ],
   queEsperarDespues: `${MARCA} Texto de relleno.`,
   duracionPrimeraCita: "45 minutos",
-  especialistas: [{ _key: "e1", _type: "reference", _ref: ESPECIALISTA._id }],
+  especialistas: [{ _key: "e1", _type: "reference", _ref: DIRECTORA._id }],
   tecnologiaRelacionada: [{ _key: "t1", _type: "reference", _ref: TECNOLOGIA._id }],
   faqs: [
     {
@@ -116,6 +157,7 @@ const ESPECIALIDAD = {
   // "consultar" a propósito: verifica que la variante del CTA cambia el
   // texto y el destino sin tocar código.
   ctaVariante: "consultar",
+  enlaceFormasDePagoTexto: "Conoce nuestras facilidades de pago y opciones de financiamiento",
   seoTitulo: `${MARCA} Título de prueba`,
   seoDescripcion: `${MARCA} Descripción de prueba para verificar la meta description.`,
   orden: 99,
@@ -124,7 +166,7 @@ const ESPECIALIDAD = {
 const AJUSTES = {
   _id: "ajustesSitio",
   _type: "ajustesSitio",
-  nombreClinica: "Arieta Noova",
+  nombreClinica: "ArietaNoova",
   direccion: `${MARCA} Dirección por confirmar`,
   oficina: "Of. 204",
   distrito: "Pueblo Libre",
@@ -145,6 +187,29 @@ const AJUSTES = {
   redes: [],
 };
 
+const FORMAS_DE_PAGO = {
+  _id: "paginaFormasDePago",
+  _type: "paginaFormasDePago",
+  titulo: "Formas de pago y facilidades",
+  intro: "Transparencia y claridad en cada presupuesto de la clínica.",
+  notaTransparencia: "No publicamos una lista genérica de precios porque cada paciente requiere diagnóstico personalizado con escáner 3D.",
+  comoSeEntregaElPresupuesto: "El presupuesto se entrega por escrito tras la evaluación inicial, desglosado por fases.",
+  modalidadesDePago: [
+    { _key: "m1", nombre: "Tarjetas de crédito y débito", descripcion: "Visa, Mastercard, Amex, Diners." },
+    { _key: "m2", nombre: "Transferencias y billeteras digitales", descripcion: "BCP, BBVA, Yape y Plin." },
+    { _key: "m3", nombre: "Efectivo", descripcion: "En soles y dólares." },
+  ],
+  financiamiento: [
+    { _key: "f1", nombre: "Pago por avance de tratamiento", descripcion: "Abono inicial y cuotas mensuales en ortodoncia." },
+  ],
+  coberturaSeguros: "Emitimos comprobantes electrónicos válidos para trámites de reembolso con EPS y aseguradoras.",
+  preguntasFrecuentes: [
+    { _key: "fp1", pregunta: "¿Puedo pagar en cuotas?", respuesta: "Sí, tratamientos como ortodoncia se pagan en cuotas mensuales por control." },
+  ],
+  seoTitulo: "Formas de pago · ArietaNoova",
+  seoDescripcion: "Conoce las modalidades de pago y opciones de financiamiento en ArietaNoova.",
+};
+
 const EVALUACION = {
   _id: "paginaEvaluacion",
   _type: "paginaEvaluacion",
@@ -156,7 +221,7 @@ const EVALUACION = {
     { _key: "p1", titulo: `${MARCA} Paso de relleno`, descripcion: `${MARCA} Relleno.` },
   ],
   queEsperarDespues: `${MARCA} Texto de relleno.`,
-  quienLaAtiende: { _type: "reference", _ref: ESPECIALISTA._id },
+  quienLaAtiende: { _type: "reference", _ref: DIRECTORA._id },
 };
 
 const DERIVACION = {
@@ -177,7 +242,7 @@ const DERIVACION = {
 };
 
 // El orden importa: las referencias tienen que existir antes de apuntarlas.
-const DOCUMENTOS = [ESPECIALISTA, TECNOLOGIA, ESPECIALIDAD, AJUSTES, EVALUACION, DERIVACION];
+const DOCUMENTOS = [DIRECTORA, ESPECIALISTA, TECNOLOGIA, ESPECIALIDAD, AJUSTES, FORMAS_DE_PAGO, EVALUACION, DERIVACION];
 
 async function sembrar() {
   console.log(`\nSembrando ${DATASET} en el proyecto ${PROJECT_ID}…\n`);

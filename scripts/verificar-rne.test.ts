@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { credenciales, etiquetaRne, tituloProfesional } from "@/lib/equipo";
+import { credenciales, etiquetaRne, etiquetasTrayectoria, tituloProfesional } from "@/lib/equipo";
 import { esquemaPersona } from "@/lib/jsonld";
 import type { MiembroEquipo } from "@/types/contenido";
 
@@ -90,4 +90,35 @@ test("El JSON-LD respeta la misma regla que la pantalla", () => {
     miembro({ rneEstado: "vigente", rne: "9999", especialidad: "Cirugía oral" }),
   );
   assert.ok(vigenteJson.hasCredential, "Con el RNE vigente sí debe declararse.");
+});
+
+test("Trayectoria: los años siempre indican explícitamente de qué son", () => {
+  // Caso de la Directora: 25 años ejercicio, 13 años especialista
+  const directora = miembro({
+    nombre: "Dra. Jessica Arieta",
+    esDirectora: true,
+    anioTitulacion: 2001,
+    aniosEjercicio: 25,
+    anioEspecialidad: 2013,
+    aniosComoEspecialista: 13,
+  });
+
+  const etiquetas = etiquetasTrayectoria(directora);
+  assert.equal(etiquetas.length, 2);
+
+  // La etiqueta de 25 años DEBE decir ejercicio profesional, NUNCA especialista
+  assert.ok(
+    etiquetas[0].includes("25 años de ejercicio profesional"),
+    `"${etiquetas[0]}" debe indicar ejercicio profesional`,
+  );
+  assert.ok(
+    !etiquetas[0].includes("especialista"),
+    `"${etiquetas[0]}" no puede asociar 25 años con especialista`,
+  );
+
+  // La etiqueta de especialista DEBE ser de 13 años
+  assert.ok(
+    etiquetas[1].includes("13 años como especialista"),
+    `"${etiquetas[1]}" debe decir 13 años como especialista`,
+  );
 });

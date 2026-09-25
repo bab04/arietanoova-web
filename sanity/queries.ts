@@ -34,6 +34,11 @@ const MIEMBRO_COMPLETO = `{
   rne,
   rneEstado,
   formacion,
+  anioTitulacion,
+  aniosEjercicio,
+  anioEspecialidad,
+  aniosComoEspecialista,
+  docencia[] { _key, institucion, aniosDocencia, vigente },
   aniosExperiencia,
   bio,
   foto ${IMAGEN},
@@ -84,6 +89,7 @@ export const ESPECIALIDAD_POR_SLUG = groq`
     faqs[] { _key, pregunta, respuesta },
     ctaVariante,
     imagenPrincipal ${IMAGEN},
+    enlaceFormasDePagoTexto,
     seoTitulo,
     seoDescripcion,
     orden
@@ -192,9 +198,28 @@ export const PAGINA_EVALUACION = groq`
   }
 `;
 
+export const PAGINA_FORMAS_DE_PAGO = groq`
+  *[_type == "paginaFormasDePago"][0] {
+    titulo,
+    intro,
+    notaTransparencia,
+    comoSeEntregaElPresupuesto,
+    modalidadesDePago[] { _key, nombre, descripcion },
+    financiamiento[] { _key, nombre, descripcion, requisitos },
+    coberturaSeguros,
+    preguntasFrecuentes[] { _key, pregunta, respuesta },
+    seoTitulo,
+    seoDescripcion
+  }
+`;
+
 export const AJUSTES_SITIO = groq`
   *[_type == "ajustesSitio"][0] {
     nombreClinica,
+    logoPrincipal ${IMAGEN},
+    logoInvertido ${IMAGEN},
+    isotipo ${IMAGEN},
+    favicon ${IMAGEN},
     direccion,
     oficina,
     distrito,

@@ -24,7 +24,7 @@ const ALTO = 630;
 export async function GET(peticion: Request) {
   const { searchParams } = new URL(peticion.url);
 
-  const titulo = (searchParams.get("titulo") ?? "Arieta Noova").slice(0, 120);
+  const titulo = (searchParams.get("titulo") ?? "ArietaNoova").slice(0, 120);
   const etiqueta = searchParams.get("etiqueta")?.slice(0, 60);
 
   // El título largo baja de tamaño para que nunca se desborde el lienzo.
@@ -84,7 +84,7 @@ export async function GET(peticion: Request) {
             color: tokens.suave,
           }}
         >
-          <span style={{ color: tokens.tinta, fontWeight: 600 }}>Arieta Noova</span>
+          <span style={{ color: tokens.tinta, fontWeight: 600, whiteSpace: "nowrap" }}>ArietaNoova</span>
           <span>Pueblo Libre, Lima</span>
         </div>
       </div>

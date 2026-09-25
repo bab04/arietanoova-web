@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 
+import { RevelarEnCascada } from "@/components/Revelar";
 import { Contenedor, EstadoVacio, Seccion, TituloSeccion } from "@/components/Seccion";
 import { SpecialtyCard } from "@/components/SpecialtyCard";
 import { esquemaMigas, StructuredData } from "@/components/StructuredData";
+import { ESPECIALIDADES_RESUMEN_RESPALDO } from "@/lib/datos-respaldo";
 import { construirMetadatos } from "@/lib/metadatos";
 import { RUTAS } from "@/lib/rutas";
 import { consultar } from "@/sanity/client";
@@ -31,12 +33,14 @@ export function generateMetadata(): Metadata {
 }
 
 export default async function IndiceEspecialidades() {
-  const especialidades = await consultar<EspecialidadResumen[]>(
+  const datos = await consultar<EspecialidadResumen[]>(
     ESPECIALIDADES_INDICE,
-    [],
+    ESPECIALIDADES_RESUMEN_RESPALDO,
     {},
     { etiquetas: ["especialidad"] },
   );
+
+  const especialidades = datos && datos.length > 0 ? datos : ESPECIALIDADES_RESUMEN_RESPALDO;
 
   return (
     <>
@@ -57,11 +61,11 @@ export default async function IndiceEspecialidades() {
           </TituloSeccion>
 
           {especialidades.length > 0 ? (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <RevelarEnCascada className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {especialidades.map((especialidad) => (
                 <SpecialtyCard key={especialidad._id} especialidad={especialidad} />
               ))}
-            </div>
+            </RevelarEnCascada>
           ) : (
             <EstadoVacio
               titulo="Aún no hay especialidades cargadas"

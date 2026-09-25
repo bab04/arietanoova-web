@@ -221,6 +221,15 @@ export const especialidad = defineType({
       validation: (r) => r.max(160).warning("Pasa de 160 caracteres: Google la va a recortar."),
     }),
     defineField({
+      name: "enlaceFormasDePagoTexto",
+      title: "Texto del bloque de formas de pago",
+      type: "string",
+      group: "contenido",
+      description:
+        "Texto configurable para el bloque de enlace hacia /formas-de-pago al final de la página.",
+      initialValue: "Conoce nuestras modalidades de pago y facilidades de financiamiento",
+    }),
+    defineField({
       name: "orden",
       title: "Orden en el índice",
       type: "number",
